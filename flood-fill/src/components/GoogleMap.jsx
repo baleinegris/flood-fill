@@ -97,7 +97,7 @@ export default function GoogleMap() {
     loader.load().then(() => {
       if (mapRef.current) {
         const mapInstance = new window.google.maps.Map(mapRef.current, {
-          center: { lat: -33.860664, lng: 151.208138 },
+          center: { lat: 43.6532, lng: -79.3832 },
           zoom: 13,
           styles: mapStyles,
         });
@@ -113,9 +113,8 @@ export default function GoogleMap() {
           }
           console.log(map)
           const position = place.geometry.location;
-          setLocation(place.formatted_address);
           setSearched(true);
-          console.log(position)
+          const id = place.formatted_address;
           if (mapInstance) {
             console.log('test')
             mapInstance.panTo(position);
@@ -123,25 +122,16 @@ export default function GoogleMap() {
             if (marker) {
               marker.setMap(null);
             }
-
-            // Create a new marker with custom appearance
             const newMarker = new window.google.maps.Marker({
               position,
-              map,
+              map: mapInstance,
               label: {
-                text: place.formatted_address,
+                text: id,
                 color: 'black',
                 fontSize: '16px',
                 fontWeight: 'bold',
-              },
-              icon: {
-                url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Custom icon URL
-                scaledSize: new window.google.maps.Size(40, 40), // Scaled size of the icon
-                labelOrigin: new window.google.maps.Point(20, -10), // Move label above the pin
-              },
+              }
             });
-
-            // Set the new marker
             setMarker(newMarker);
           }
         });
@@ -153,15 +143,15 @@ export default function GoogleMap() {
 
 
     return (
-      <>        
-      <input className='m-4' ref={inputRef} type="text" placeholder="Type in an address!" onChange={handleInputChange}/>
-      <button onClick={handleSearch}> Search! </button>
-      <div ref={mapRef} style={{ width: '100vw', height: '80vh' }} />
+      <div>
+      <input className='m-4 p-2 z-10 relative' ref={inputRef} type="text" placeholder="Type in an address!" onChange={handleInputChange}/>
+      <button className='relative' onClick={handleSearch}> Search! </button>
+      <div ref={mapRef} style={{ width: '60vw', height: '80vh' }} />
       {searched && <div> Report for location : {location} </div>}
       {searched && 
       <div className='flex w-full h-full justify-center items-center'>
         <Report name={location} precipitation={33}/>
       </div>}
-      </>
+      </div>
     )
 }
