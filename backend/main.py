@@ -4,6 +4,8 @@ from model import Model
 import requests
 from dotenv import load_dotenv
 
+import precip
+
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
@@ -18,10 +20,10 @@ sample_data = {
 
 model = Model(sample_data)
 
-def get_expected_floods(address, yr):
+def get_expected_floods(address, yr, scenario):
     lat, lon = get_lat_long(address)
     elev = get_elevation(lat, lon)
-    precip = get_precipitation(lat, lon, yr)
+    precip = precip.project(lat, lon, scenario)[yr]
     return model.predict_floods({'latitude': [lat], 'longitude': [lon], 'elevation': [elev], 'precipitation': [precip]})
 
 def get_plot(address):
