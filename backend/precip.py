@@ -1,37 +1,59 @@
+from typing import Dict
+
 from netCDF4 import Dataset
 import numpy as np
 
 PRECIP_DATA_DIR = "data/precip"
 
-def project(lat: float, lon: float, year: int, scenario: str = None) -> float:
-    """Return the median total precipitation for the given location in the given year.
-    If the year is 2015 or before, return the actual recorded precipiation.
-    If the year is after 2014, project based on the given SSP scenario.
-    If no scenario is given, the year must be before 2015.
+def project(lat: float, lon: float, scenario: str) -> Dict[int, float]:
+    """Return the median total precipitation for the given location for the years 1950-2100.
+    Combines historical data and predictions given by the scenario.
+    Return a mapping from year to median total precipitation.
 
     Preconditions:
     - 41.0 <= lat <= 83.5
     - -140.9 <= lon <= 52.0
-    - 1950 <= year <= 2100
-    - year < 2015 or scenario.lower() in ['ssp126', 'ssp245', 'ssp585']
+    - scenario.lower() in ['ssp126', 'ssp245', 'ssp585']
     """
     assert 41.0 <= lat <= 83.5, "Latitude out of range"
     assert -140.9 <= lon <= -52, "Longitude out of range"
-    assert 1950 <= year <= 2100, "Year out of range"
-    assert scenario is None or scenario.lower() in ['ssp126', 'ssp245', 'ssp585'], \
-            "Invalid scenario"
-    assert year < 2015 or scenario is not None, "Must specify scenario for 2015 or after"
+    assert scenario.lower() in ['ssp126', 'ssp245', 'ssp585'], "Invalid scenario"
 
-    if year < 2015:
-        scenario = 'historical'
+    historical = _project_from_dataset(lat, lon, 'historical')
+    projected = _project_from_dataset(lat, lon, scenario)
+
+    result = historical.copy()
+    result.update(projected)
+
+    return result
+
+
+def _project_from_dataset(lat: float, lon: float, scenario: str) -> Dict[int, float]:
+    """Return the median total precipitation for the given location for all years in the dataset.
+    If the scenario is 'historical', return actual recorded values.
+    Otherwise, return the predictions given by the scenario.
+    Return a mapping from year to median total precipitation.
+
+    Preconditions:
+    - 41.0 <= lat <= 83.5
+    - -140.9 <= lon <= 52.0
+    - scenario.lower() in ['ssp126', 'ssp245', 'ssp585', 'historical']
+    """
+    assert 41.0 <= lat <= 83.5, "Latitude out of range"
+    assert -140.9 <= lon <= -52, "Longitude out of range"
+    assert scenario.lower() in ['ssp126', 'ssp245', 'ssp585', 'historical'], "Invalid scenario"
 
     filename = f'{PRECIP_DATA_DIR}/{_get_filename(scenario)}'
     nc = Dataset(filename, 'r')
     nc_lat_idx = _find_nearest_idx(nc.variables['lat'][:], lat)
     nc_lon_idx = _find_nearest_idx(nc.variables['lon'][:], lon)
-    nc_time_idx = _find_nearest_idx(nc.variables['time'][:], (year - 1950) * 365)
 
-    return float(nc.variables['Precip'][nc_time_idx][nc_lat_idx][nc_lon_idx])
+    times = nc.variables['time']
+    precips = nc.variables['Precip'][:, nc_lat_idx, nc_lon_idx]
+
+    assert all(x is not np.ma.masked for x in precips), 'Coordinates missing some data'
+
+    return {int(np.round(times[i] / 365 + 1950, 0)): precips[i] for i in range(len(times))}
 
 
 def _get_filename(scenario: str) -> str:
