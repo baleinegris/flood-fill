@@ -35,11 +35,11 @@ export default function Report({ precipitation, danger, name }) {
   };
 
   return (
-    <div className="flex flex-col items-center w-[1000px] h-[500px] border-black border-2"> 
-        <div className=" m-6">
+    <div className="flex flex-col items-center border-black border-2 bg-white rounded-lg"> 
+        <div className=" m-6 text-lg font-bold">
             Flood Report for {name}
         </div>
-        <Box sx={{ width: '100%' }}>
+        <div className="w-full h-[1px] bg-black" />
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
             <Tab label="Present" {...a11yProps(0)} />
@@ -52,7 +52,6 @@ export default function Report({ precipitation, danger, name }) {
         <CustomTabPanel value={value} index={1}>
             Item Two
         </CustomTabPanel>
-        </Box>
     </div>
   );
 }
