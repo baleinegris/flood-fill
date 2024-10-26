@@ -1,11 +1,13 @@
 import React from "react";
+import logo from '/logo - Copy.png';
 
 export default function Title(){
     return (
-        <div className="flex justify-center items-center w-[100%] relative mb-[-30px]">
-            <div className="bg-gradient-to-r from-cyan-500 to-blue-500 to-pink-500 text-white font-bold m-6 text-[3em] bg-clip-text text-transparent">
+        <div className="flex justify-center items-center relative bg-[#0a1627]">
+            {/* <div className="bg-gradient-to-r from-cyan-500 to-blue-500 to-pink-500 font-bold m-6 text-[3em] bg-clip-text text-transparent">
                 FLOOD FILL
-            </div>
+            </div> */}
+            <img src={logo} style = {{height: '150px', borderRadius: '50px'}}/>
         </div>
     )
 }

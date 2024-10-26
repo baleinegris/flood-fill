@@ -1,8 +1,19 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {APIProvider, Map} from '@vis.gl/react-google-maps';
 import { Loader } from '@googlemaps/js-api-loader';
 import { Marker } from '@react-google-maps/api';
 import Report from './Report';
+import { ReportContext } from '../contexts/ReportViewContext';
+
+const FLASK_URL = 'temp'
+async function getData(position) {
+  return 
+  const response = await fetch(FLASK_URL);
+  const data = await response.json();
+  setReportView(true);
+  return data;
+}
+
 const mapStyles = [
   {
     featureType: 'all',
@@ -41,14 +52,19 @@ const mapStyles = [
   },
 ];
 
+
 export default function GoogleMap() {
+  let count = 0;
+  const viewContext = useContext(ReportContext);
+  const reportView = viewContext.reportView;
+  const setReportView = viewContext.setReportView;
+  const setActiveReport = viewContext.setActiveReport;
+  const activeReport = viewContext.activeReport;
   const inputRef = useRef(null);
   const [location, setLocation] = useState('');
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
-  const [searched, setSearched] = useState(false);
-
   const handleInputChange = (event) => {
     setLocation(event.target.value);
   };
@@ -58,7 +74,6 @@ export default function GoogleMap() {
       const geocoder = new window.google.maps.Geocoder();
       geocoder.geocode({ address: location }, (results, status) => {
         if (status === 'OK' && results[0]) {
-          setSearched(true);
           console.log(results[0]);
           const position = results[0].geometry.location;
           const id = results[0].formatted_address;
@@ -99,6 +114,8 @@ export default function GoogleMap() {
         const mapInstance = new window.google.maps.Map(mapRef.current, {
           center: { lat: 43.6532, lng: -79.3832 },
           zoom: 13,
+          mapTypeId: 'hybrid',
+          mapTypeControl: false,
           styles: mapStyles,
         });
         setMap(mapInstance);
@@ -111,10 +128,11 @@ export default function GoogleMap() {
             console.log('No details available for input: ' + place.name);
             return;
           }
-          console.log(map)
           const position = place.geometry.location;
-          setSearched(true);
+          setReportView(true);
+          getData(position)
           const id = place.formatted_address;
+          setLocation(id);
           if (mapInstance) {
             console.log('test')
             mapInstance.panTo(position);
@@ -123,16 +141,21 @@ export default function GoogleMap() {
               marker.setMap(null);
             }
             const newMarker = new window.google.maps.Marker({
+              id: count,
               position,
               map: mapInstance,
               label: {
                 text: id,
-                color: 'black',
+                className: "map-label",
                 fontSize: '16px',
                 fontWeight: 'bold',
               }
             });
+            i += 1;
             setMarker(newMarker);
+            newMarker.addListener("click", () => {
+              setActiveReport(newMarker.id);
+            });
           }
         });
       }
@@ -143,15 +166,16 @@ export default function GoogleMap() {
 
 
     return (
-      <div>
-      <input className='m-4 p-2 z-10 relative' ref={inputRef} type="text" placeholder="Type in an address!" onChange={handleInputChange}/>
-      <button className='relative' onClick={handleSearch}> Search! </button>
+      <>
+      <div className='bg-white backdrop-blur-sm px-5 pb-5 m-5 rounded-lg border-black border-[1px]'>
+      <input className='m-4 p-2 z-10 relative bg-slate-500 border-black border-2 text-black' ref={inputRef} type="text" placeholder="Type in an address!" onChange={handleInputChange}/>
+      <button className='relative border-black border-1' onClick={handleSearch}> Search! </button>
       <div ref={mapRef} style={{ width: '60vw', height: '80vh' }} />
-      {searched && <div> Report for location : {location} </div>}
-      {searched && 
+      </div>
+      {reportView && 
       <div className='flex w-full h-full justify-center items-center'>
         <Report name={location} precipitation={33}/>
       </div>}
-      </div>
+      </>
     )
 }
