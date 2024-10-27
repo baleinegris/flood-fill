@@ -67,7 +67,12 @@ class Model:
             precips})
         inputs = tf.convert_to_tensor(inputs)
         inputs = self.scaler.transform(inputs)
-        print(inputs)
+        predicted_floods = self.model.predict(inputs, batch_size=BATCH_SIZE)
+        return predicted_floods
+
+    def predict_all(self, df):
+        inputs = tf.convert_to_tensor(df.loc[:, ['lat', 'lon', 'precip']])
+        inputs = self.scaler.transform(inputs)
         predicted_floods = self.model.predict(inputs, batch_size=BATCH_SIZE)
         return predicted_floods
 
