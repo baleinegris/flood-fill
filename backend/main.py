@@ -4,8 +4,6 @@ from model import Model
 import requests
 from dotenv import load_dotenv
 
-import precip
-
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
