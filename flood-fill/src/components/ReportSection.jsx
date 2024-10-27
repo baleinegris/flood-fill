@@ -17,7 +17,7 @@ export default function ReportSection({ precipitation, expectedFloods, graphHref
 </div>
         <div className="flex flex-col w-[40%]">
             <div className="text-black font-bold"> <span className="font-bold">Danger Level</span>:</div>
-            <DangerBar percent={70} />
+            <DangerBar percent={danger} />
         </div>
     </div>
     <span className="font-bold">Projected number of floods per year</span>:
