@@ -77,18 +77,23 @@ export default function GoogleMap() {
       scenario: scenario,
     }
     console.log(payload)
-    const response = await fetch(FLASK_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-    const data = await response.json();
-    console.log(data)
-    setReportData(data);
-    setLoadingReport(false);
-    return data;
+    try{
+      const response = await fetch(FLASK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+      const data = await response.json();
+      console.log(data)
+      setReportData(data);
+      setLoadingReport(false);
+      return data;
+    } catch (error) {
+      console.error('Error:', error);
+      return null;
+    }
   }
 
   const handleSearch = () => {

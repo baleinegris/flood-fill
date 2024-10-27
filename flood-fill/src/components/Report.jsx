@@ -31,10 +31,10 @@ export default function Report({ name, data }) {
   const [value, setValue] = React.useState(0);
   const presentPrecip = data.expected_floods['2024'][1];
   const presentFloods = data.expected_floods['2024'][0];
-  const presentDanger = (1 - Math.exp(-presentFloods));
+  const presentDanger = (data.current_danger * 100).toFixed(2);
   const futurePrecip = data.expected_floods['2030'][1];
   const futureFloods = data.expected_floods['2030'][0];
-  const futureDanger = (1 - Math.exp(-futureFloods));
+  const futureDanger = (data.future_danger * 100).toFixed(2);
   const imgHref = data.plot
 
   const handleChange = (event, newValue) => {
