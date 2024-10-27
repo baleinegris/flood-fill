@@ -98,23 +98,33 @@ export default function GoogleMap() {
           console.log(results[0]);
           const position = results[0].geometry.location;
           const id = results[0].formatted_address;
+          setReportView(true);
+          setLoadingReport(true);
+          getData(position);
+          setLocation(id);
           if (mapInstance) {
-            map.panTo(position);
-            map.setZoom(15);
+            console.log('test')
+            mapInstance.panTo(position);
+            mapInstance.setZoom(15);
             if (marker) {
               marker.setMap(null);
             }
             const newMarker = new window.google.maps.Marker({
+              id: count,
               position,
-              map,
+              map: mapInstance,
               label: {
                 text: id,
-                color: 'black',
+                className: "map-label",
                 fontSize: '16px',
                 fontWeight: 'bold',
               }
             });
+            i += 1;
             setMarker(newMarker);
+            newMarker.addListener("click", () => {
+              setActiveReport(newMarker.id);
+            });
           }
         } else {
           console.error('Geocode was not successful for the following reason: ' + status);

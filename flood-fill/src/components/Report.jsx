@@ -29,11 +29,13 @@ function a11yProps(index) {
 
 export default function Report({ name, data }) {
   const [value, setValue] = React.useState(0);
-  const presentPrecip = data[0].precipitation;
-  const presentDanger = data[0].danger;
-  const futurePrecip = data[1].precipitation;
-  const futureDanger = data[1].danger;
-  const imgHref = data.graph
+  const presentPrecip = data.expected_floods['2024'][1];
+  const presentFloods = data.expected_floods['2024'][0];
+  const presentDanger = 0;
+  const futurePrecip = data.expected_floods['2030'][1];
+  const futureFloods = data.expected_floods['2030'][0];
+  const futureDanger = 0;
+  const imgHref = data.plot
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -52,10 +54,10 @@ export default function Report({ name, data }) {
             </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-            <ReportSection precipitation={presentPrecip} danger={presentDanger}/>
+            <ReportSection graphHref={imgHref} expectedFloods={presentFloods} precipitation={presentPrecip} danger={presentDanger}/>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-        <ReportSection precipitation={futurePrecip} danger={futureDanger}/>
+        <ReportSection graphHref={imgHref} expectedFloods={futureFloods} precipitation={futurePrecip} danger={futureDanger}/>
         </CustomTabPanel>
     </div>
   );
