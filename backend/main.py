@@ -29,7 +29,9 @@ def get_expected_floods(lat, lon, scenario, model):
 def get_plot(address, expected_floods) -> str:
     # Create a plot of expected floods over the years
     plt.figure(figsize=(10, 5))
-    plt.plot(expected_floods, marker='o')
+    axes = {yr : expected_floods[yr][0] for yr in expected_floods}
+    print(axes)
+    plt.plot(axes, marker='o')
     plt.title(f'Expected Floods per Year for {address}')
     plt.xlabel('Year')
     plt.ylabel('Expected Floods')
