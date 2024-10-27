@@ -28,8 +28,8 @@ def project(lat: float, lon: float, scenario: str) -> Dict[int, float]:
     - -140.9 <= lon <= 52.0
     - scenario.lower() in ['ssp126', 'ssp245', 'ssp585']
     """
-    assert 41.0 <= lat <= 83.5, "Latitude out of range"
-    assert -140.9 <= lon <= -52, "Longitude out of range"
+    if not 41.0 <= lat <= 83.5: raise ValueError("Latitude out of range")
+    if not -140.9 <= lon <= -52: raise ValueError("Longitude out of range")
     assert scenario.lower() in ['ssp126', 'ssp245', 'ssp585'], "Invalid scenario"
 
     historical = _project_from_dataset(lat, lon, 'historical')
@@ -52,8 +52,8 @@ def _project_from_dataset(lat: float, lon: float, scenario: str) -> Dict[int, fl
     - -140.9 <= lon <= 52.0
     - scenario.lower() in ['ssp126', 'ssp245', 'ssp585', 'historical']
     """
-    assert 41.0 <= lat <= 83.5, "Latitude out of range"
-    assert -140.9 <= lon <= -52, "Longitude out of range"
+    if not 41.0 <= lat <= 83.5: raise ValueError("Latitude out of range")
+    if not -140.9 <= lon <= -52: raise ValueError("Longitude out of range")
     assert scenario.lower() in ['ssp126', 'ssp245', 'ssp585', 'historical'], "Invalid scenario"
 
     filename = f'{PRECIP_DATA_DIR}/{_get_filename(scenario)}'
@@ -64,7 +64,7 @@ def _project_from_dataset(lat: float, lon: float, scenario: str) -> Dict[int, fl
     times = nc.variables['time']
     precips = nc.variables['Precip'][:, nc_lat_idx, nc_lon_idx]
 
-    assert all(x is not np.ma.masked for x in precips), 'Coordinates missing some data'
+    if any(x is np.ma.masked for x in precips): raise ValueError('Coordinates missing some data')
 
     return {int(np.round(times[i] / 365 + 1950, 0)): precips[i] for i in range(len(times))}
 
@@ -89,6 +89,6 @@ def _find_nearest_idx(array: np.array, value: float) -> float:
     - len(array) > 0
     """
 
-    assert len(array) > 0, "_find_nearest_idk called on empty array"
+    assert len(array) > 0, "_find_nearest_idx called on empty array"
 
     return np.abs(array - value).argmin()
