@@ -60,10 +60,10 @@ class Model():
 
         self.model = model
 
-    def predict_floods(self, data):
-        example = pd.DataFrame(data)
-        predicted_floods = self.model.predict(example, batch_size=BATCH_SIZE)
-        return predicted_floods[0][0].item()
+    def predict_floods(self, lat, long, precips):
+        inputs = pd.DataFrame({'lat': [lat], 'lon': [lon], 'precip': precips})
+        predicted_floods = self.model.predict(inputs, batch_size=BATCH_SIZE)
+        return predicted_floods[0]
     
     def load(self, path):
         self.model = tf.keras.models.load_model(path)
