@@ -61,6 +61,7 @@ export default function GoogleMap() {
   const activeReport = viewContext.activeReport;
   const inputRef = useRef(null);
   const [location, setLocation] = useState('');
+  const [fullLocName, setFullLocName] = useState('');
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
@@ -102,6 +103,7 @@ export default function GoogleMap() {
           setLoadingReport(true);
           getData(position);
           setLocation(id);
+          setFullLocName(id);
           if (mapInstance) {
             console.log('test')
             mapInstance.panTo(position);
@@ -164,6 +166,7 @@ export default function GoogleMap() {
           setLoadingReport(true);
           getData(position);
           const id = place.formatted_address;
+          setFullLocName(id);
           setLocation(id);
           if (mapInstance) {
             console.log('test')
@@ -214,7 +217,7 @@ export default function GoogleMap() {
       </div>
       {reportView && 
       <div className='flex w-full h-full justify-center items-center'>
-        {loadingReport ? <SpinnerLoad/> : <Report name={location} data={reportData}/>}
+        {loadingReport ? <SpinnerLoad/> : <Report name={fullLocName} data={reportData}/>}
       </div>}
       </>
     )
