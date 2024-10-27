@@ -2,7 +2,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 from model import Model
 import requests
+import os
 from dotenv import load_dotenv
+from precip import project
+import fiona
 
 load_dotenv()
 
@@ -16,16 +19,14 @@ sample_data = {
     'floods_per_year': np.random.poisson(2, 1000)
 }
 
-model = Model(sample_data)
-
 def get_expected_floods(address, yr, scenario):
     lat, lon = get_lat_long(address)
     elev = get_elevation(lat, lon)
-    precip = precip.project(lat, lon, scenario)[yr]
+    precip = project(lat, lon, scenario)[yr]
     return model.predict_floods({'latitude': [lat], 'longitude': [lon], 'elevation': [elev], 'precipitation': [precip]})
 
 def get_plot(address):
-    years = range(2023, 2101)
+    years = range(2024, 2101)
     expected_floods = [get_expected_floods(address, yr) for yr in years]
 
     plt.figure(figsize=(10, 5))
@@ -45,3 +46,15 @@ def get_elevation(lat, lon):
         if results:
             return results[0].get('elevation')
     return None
+
+def get_lat_long(address):
+    return 50, -119
+
+if __name__ == '__main__':
+    # model = Model(sample_data)
+    # get_expected_floods('Vancouver', 2025, 'ssp126')
+    with fiona.open('historical_flood_events.gpkg') as src:
+        print(src.schema)
+        for feature in src:
+            print(feature['properties'])
+            print(feature['geometry']['coordinates'])
