@@ -27,6 +27,7 @@ def get_plot(address, expected_floods) -> str:
     plt.title(f'Expected Floods per Year for {address}')
     plt.xlabel('Year')
     plt.ylabel('Expected Floods')
+    plt.ylim(0, max(y) * 1.3)
     plt.grid(True)
     bio = BytesIO()
     plt.savefig(bio, format='png')
