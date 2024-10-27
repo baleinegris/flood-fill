@@ -3,33 +3,18 @@ from io import BytesIO
 import matplotlib.pyplot as plt
 import numpy as np
 from model import Model
-import requests
-import os
 from dotenv import load_dotenv
 from precip import project
-import pandas as pd 
+import pandas as pd
 
 # Load environment variables from a .env file
 load_dotenv()
 
-sample_data = {
-    'latitude': np.random.uniform(-90, 90, 1000),
-    'longitude': np.random.uniform(-180, 180, 1000),
-    'elevation': np.random.uniform(0, 5000, 1000),
-    'precipitation': np.random.uniform(0, 500, 1000),
-    'floods_per_year': np.random.poisson(2, 1000)
-}
-
-def get_expected_floods(address, yr, scenario):
-    lat, lon = get_lat_long(address)
-
 def _get_expected_floods_year(lat, lon, yr, scenario):
-     # Get elevation data for the given coordinates
-    elev = get_elevation(lat, lon)
     # Project precipitation data for the given coordinates and scenario
     precip = project(lat, lon, scenario)[yr]
     # Predict floods using the model
-    return model.predict_floods({'lat': [lat], 'lon': [lon], 'elev': [elev], 'precip': [precip]})
+    return model.predict_floods({'lat': [lat], 'lon': [lon], 'precip': [precip]})
 
 # Function to get expected floods for a given latitude, longitude, year, and scenario
 def get_expected_floods(lat, lon, scenario):
@@ -52,9 +37,6 @@ def get_plot(address, expected_floods) -> str:
     plt.savefig(bio, format='png')
     return base64.b64encode(bio.read()).decode('utf-8')
 
-def get_lat_long(address):
-    return 50, -119
-
 # Function to load training data from a pickle file
 def load_data():
     # Load the data from the specified pickle file
@@ -67,5 +49,3 @@ if __name__ == '__main__':
     df = load_data()   
     # Initialize the model with the training data
     model = Model(df)
-    # Get expected floods for a specific location and year
-    print(get_plot("somwhere", get_expected_floods(50, -119, 2025, 'ssp126')))

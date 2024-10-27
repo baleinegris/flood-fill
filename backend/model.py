@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 class Model():
     def __init__(self, df):
         # Features and target
-        X = df[['lat', 'lon', 'elev', 'precip']]
+        X = df[['lat', 'lon', 'precip']]
         y = df['floods_per_year']
 
         # Split the data
@@ -22,7 +22,7 @@ class Model():
 
         # Build the model
         model = Sequential([
-            Dense(64, input_dim=4, activation='relu'),
+            Dense(64, input_dim=3, activation='relu'),
             Dense(32, activation='relu'),
             Dense(1)
         ])
