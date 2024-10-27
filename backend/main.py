@@ -1,9 +1,7 @@
 import base64
 from io import BytesIO
 import matplotlib.pyplot as plt
-import numpy as np
 from model import Model
-from dotenv import load_dotenv
 from precip import project
 import pandas as pd
 

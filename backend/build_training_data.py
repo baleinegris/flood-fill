@@ -5,7 +5,7 @@ import pickle
 from util import get_elevation
 
 PICKLE_PATH = 'data/training_data.pkl'
-MAX_FLOODS = 10  # to limit computation time. set to None to process whole dataset
+MAX_FLOODS = None  # to limit computation time. set to None to process whole dataset
 
 def get_floods(filename: str) -> dict:
     with fiona.open(filename) as src:
