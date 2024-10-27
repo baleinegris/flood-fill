@@ -10,7 +10,7 @@ def load_data():
     # Load the data from the pickle file
     try:
         df = pd.read_pickle('data/training_data.pkl')
-    except:
+    except (FileNotFoundError, lzma.LZMAError):
         df = pd.read_pickle(lzma.open('data/training_data.pkl.xz'))
     return df
 if __name__ == '__main__':
