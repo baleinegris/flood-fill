@@ -4,6 +4,7 @@ import pickle
 from math import exp
 
 DANGER_HIST_PATH = "data/danger_hist.pkl"
+DANGER_FACTOR = 10.0
 
 # Function to load training data from a pickle file
 def load_training_data():
@@ -21,7 +22,7 @@ def build_histogram(df):
         pickle.dump(counts, f)
 
 def get_danger(num_floods):
-    return 1 - exp(-num_floods)
+    return 1 - exp(-num_floods * DANGER_FACTOR)
 #def get_danger(num_floods):
 #    with open(DANGER_HIST_PATH, 'rb') as f:
 #        counts = pickle.load(f)
