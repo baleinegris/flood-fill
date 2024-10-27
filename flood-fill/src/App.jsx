@@ -18,7 +18,7 @@ function App() {
     <ReportProvider>
       <APIProvider apiKey={apiKey} onLoad={() => console.log('Maps API has loaded.')}>
         <Title />
-        <div className='flex items-center w-[100%] relative justify-center'>
+        <div className='flex items-center w-[100%] relative justify-left'>
           <GoogleMap />
           <ReportMessage/>
           </div>
