@@ -13,7 +13,7 @@ def _get_expected_floods_year(lat, lon, yr, scenario, model):
     # Project precipitation data for the given coordinates and scenario
     precip = project(lat, lon, scenario)[yr]
     # Predict floods using the model
-    return [model.predict_floods({'lat': [lat], 'lon': [lon], 'precip': [precip]}), precip]
+    return [model.predict_floods({'lat': [lat], 'lon': [lon], 'precip': [precip]})[0], precip]
 
 # Function to get expected floods for a given latitude, longitude, year, and scenario
 def get_expected_floods(lat, lon, scenario, model):
