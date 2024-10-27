@@ -7,11 +7,9 @@ from tensorflow.keras.layers import Dense
 import matplotlib.pyplot as plt
 
 class Model():
-    def __init__(self, data):
-        df = pd.DataFrame(data)
-
+    def __init__(self, df):
         # Features and target
-        X = df[['latitude', 'longitude', 'elevation', 'precipitation']]
+        X = df[['lat', 'lon', 'elev', 'precip']]
         y = df['floods_per_year']
 
         # Split the data
@@ -32,6 +30,7 @@ class Model():
         # Compile the model
         model.compile(optimizer='adam', loss='mse')
 
+        # Train the model
         history = model.fit(X_train, y_train, epochs=50, batch_size=10, validation_split=0.2)
 
         # Plot the loss for each epoch
