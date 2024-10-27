@@ -31,13 +31,21 @@ class Model():
         model.compile(optimizer='adam', loss='mse')
 
         # Train the model
-        history = model.fit(X_train, y_train, epochs=50, batch_size=10, validation_split=0.2)
+        history = model.fit(X_train, y_train, epochs=20, batch_size=10, validation_split=0.2)
 
         # Plot the loss for each epoch
         plt.plot(history.history['loss'], label='Training Loss')
         plt.plot(history.history['val_loss'], label='Validation Loss')
         plt.xlabel('Epoch')
         plt.ylabel('Loss')
+        plt.legend()
+        plt.show()
+
+        # Plot the accuracy for each epoch
+        plt.plot(history.history['accuracy'], label='Training Accuracy')
+        plt.plot(history.history['val_accuracy'], label='Validation Accuracy')
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy')
         plt.legend()
         plt.show()
         
