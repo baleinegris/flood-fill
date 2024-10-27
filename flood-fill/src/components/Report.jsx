@@ -35,7 +35,7 @@ export default function Report({ precipitation, danger, name }) {
   };
 
   return (
-    <div className="flex flex-col items-center border-black border-2 bg-white rounded-lg"> 
+    <div className="flex flex-col items-center border-black border-2 bg-white rounded-lg max-w-[90%]"> 
         <div className=" m-6 text-lg font-bold">
             Flood Report for {name}
         </div>

@@ -1,18 +1,12 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {Suspense, useContext, useEffect, useRef, useState} from 'react';
 import {APIProvider, Map} from '@vis.gl/react-google-maps';
 import { Loader } from '@googlemaps/js-api-loader';
 import { Marker } from '@react-google-maps/api';
 import Report from './Report';
 import { ReportContext } from '../contexts/ReportViewContext';
+import SpinnerLoad from './Spinner';
 
 const FLASK_URL = 'temp'
-async function getData(position) {
-  return 
-  const response = await fetch(FLASK_URL);
-  const data = await response.json();
-  setReportView(true);
-  return data;
-}
 
 const mapStyles = [
   {
@@ -54,6 +48,7 @@ const mapStyles = [
 
 
 export default function GoogleMap() {
+  const [loadingReport, setLoadingReport] = useState(false);
   let count = 0;
   const viewContext = useContext(ReportContext);
   const reportView = viewContext.reportView;
@@ -68,7 +63,16 @@ export default function GoogleMap() {
   const handleInputChange = (event) => {
     setLocation(event.target.value);
   };
-
+  async function getData(position) {
+    setTimeout(() => {
+      setLoadingReport(false);
+    }, 1000);
+    return;
+    const response = await fetch(FLASK_URL);
+    const data = await response.json();
+    return data;
+    setLoadingReport(false);
+  }
   const handleSearch = () => {
     if (window.google && window.google.maps && location) {
       const geocoder = new window.google.maps.Geocoder();
@@ -130,7 +134,8 @@ export default function GoogleMap() {
           }
           const position = place.geometry.location;
           setReportView(true);
-          getData(position)
+          setLoadingReport(true);
+          getData(position);
           const id = place.formatted_address;
           setLocation(id);
           if (mapInstance) {
@@ -167,14 +172,14 @@ export default function GoogleMap() {
 
     return (
       <>
-      <div className='bg-white backdrop-blur-sm px-5 pb-5 m-5 rounded-lg border-black border-[1px]'>
+      <div className='bg-white backdrop-blur-sm px-5 pb-5 m-5 rounded-lg border-black border-[1px] left-0'>
       <input className='m-4 p-2 z-10 relative bg-slate-500 border-black border-2 text-black' ref={inputRef} type="text" placeholder="Type in an address!" onChange={handleInputChange}/>
       <button className='relative border-black border-1' onClick={handleSearch}> Search! </button>
       <div ref={mapRef} style={{ width: '60vw', height: '80vh' }} />
       </div>
       {reportView && 
       <div className='flex w-full h-full justify-center items-center'>
-        <Report name={location} precipitation={33}/>
+        {loadingReport ? <SpinnerLoad/> : <Report name={location} precipitation={33}/>}
       </div>}
       </>
     )
