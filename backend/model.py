@@ -11,7 +11,12 @@ EPOCHS = 1
 BATCH_SIZE = 256
 
 class Model():
-    def __init__(self, df):
+    def __init__(self, df=None):
+        self.model = None
+        if df is not None:
+            self.train(df)
+    
+    def train(self, df):
         # Features and target
         X = df[['lat', 'lon', 'precip']]
         y = df['floods_per_year']
@@ -57,5 +62,8 @@ class Model():
 
     def predict_floods(self, data):
         example = pd.DataFrame(data)
-        predicted_floods = self.model.predict(example)
-        return predicted_floods[0]
+        predicted_floods = self.model.predict(example, batch_size=BATCH_SIZE)
+        return predicted_floods[0][0].item()
+    
+    def load(self, path):
+        self.model = tf.keras.models.load_model(path)

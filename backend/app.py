@@ -7,7 +7,8 @@ import tensorflow as tf
 app = Flask(__name__)
 CORS(app)
 
-model = tf.keras.models.load_model(MODEL_PATH)
+model = Model()
+model.load(MODEL_PATH)
 
 @app.route('/get-data',  methods = ['POST'])
 def getData():
@@ -15,6 +16,7 @@ def getData():
     expected_floods = get_expected_floods(lat, lon, scenario, model)
     plot_data = get_plot(addr, expected_floods)
     data = {'expected_floods': expected_floods, 'plot': plot_data}
+    print(data)
     return data
 
 
