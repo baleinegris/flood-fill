@@ -53,6 +53,7 @@ const mapStyles = [
 export default function GoogleMap() {
   const [loadingReport, setLoadingReport] = useState(false);
   let count = 0;
+  const [reportData, setReportData] = useState({});
   const viewContext = useContext(ReportContext);
   const reportView = viewContext.reportView;
   const setReportView = viewContext.setReportView;
@@ -82,8 +83,9 @@ export default function GoogleMap() {
       },
       body: JSON.stringify(payload)
     });
-    console.log(response)
     const data = await response.json();
+    console.log(data)
+    setReportData(data);
     setLoadingReport(false);
     return data;
   }
@@ -202,7 +204,7 @@ export default function GoogleMap() {
       </div>
       {reportView && 
       <div className='flex w-full h-full justify-center items-center'>
-        {loadingReport ? <SpinnerLoad/> : <Report name={location} precipitation={33}/>}
+        {loadingReport ? <SpinnerLoad/> : <Report name={location} data={reportData}/>}
       </div>}
       </>
     )

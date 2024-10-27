@@ -27,8 +27,13 @@ function a11yProps(index) {
   };
 }
 
-export default function Report({ precipitation, danger, name }) {
+export default function Report({ name, data }) {
   const [value, setValue] = React.useState(0);
+  const presentPrecip = data[0].precipitation;
+  const presentDanger = data[0].danger;
+  const futurePrecip = data[1].precipitation;
+  const futureDanger = data[1].danger;
+  const imgHref = data.graph
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -47,10 +52,10 @@ export default function Report({ precipitation, danger, name }) {
             </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-            <ReportSection precipitation={precipitation} danger={danger}/>
+            <ReportSection precipitation={presentPrecip} danger={presentDanger}/>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-            Item Two
+        <ReportSection precipitation={futurePrecip} danger={futureDanger}/>
         </CustomTabPanel>
     </div>
   );
