@@ -9,7 +9,7 @@ import SpinnerLoad from './Spinner';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 
-const FLASK_URL = 'https://localhost:1234/get-data/'
+const FLASK_URL = 'http://localhost:1234/get-data'
 
 const mapStyles = [
   {
@@ -68,22 +68,21 @@ export default function GoogleMap() {
     setLocation(event.target.value);
   };
   async function getData(position) {
-    setTimeout(() => {
-      setLoadingReport(false);
-    }, 1000);
     let payload = {
       lat: position.lat(),
       lon: position.lng(),
       addr: location,
       scenario: scenario,
     }
+    console.log(payload)
     const response = await fetch(FLASK_URL, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(payload)
     });
+    console.log(response)
     const data = await response.json();
     setLoadingReport(false);
     return data;
