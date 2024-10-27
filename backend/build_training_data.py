@@ -3,6 +3,7 @@ import pandas as pd
 import precip
 import pickle
 from util import get_elevation
+import lzma
 
 PICKLE_PATH = 'data/training_data.pkl'
 MAX_FLOODS = None  # to limit computation time. set to None to process whole dataset
@@ -47,5 +48,6 @@ if __name__ == '__main__':
     df.drop('year', axis=1, inplace=True)
 
     print(f"Saving to {PICKLE_PATH}")
-    df.to_pickle(PICKLE_PATH)
+    with lzma.open(f"{PICKLE_PATH}.xz", "wb") as f:
+        df.to_pickle(f)
 
