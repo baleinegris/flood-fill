@@ -3,3 +3,8 @@ numpy
 matplotlib
 pandas
 tensorflow
+flask
+flask_cors
+scikit-learn
+fiona
+xarray

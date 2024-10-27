@@ -1,9 +1,22 @@
-from typing import Dict
+from typing import Dict, List, Tuple
 
 from netCDF4 import Dataset
+import xarray
 import numpy as np
 
 PRECIP_DATA_DIR = "data/precip"
+
+def get_dataframe() -> List[Tuple[float, float]]:
+    filename = f'{PRECIP_DATA_DIR}/{_get_filename("historical")}'
+    xr = xarray.open_dataset(filename)
+    df = xr.to_dataframe()
+    df.drop('spatial_ref', axis=1, inplace=True)
+    df.reset_index(inplace=True)  # convert MultiIndex to columns
+    df['year'] = [t.year for t in df['time']]
+    df.drop('time', axis=1, inplace=True)
+    df.rename(columns={'Precip': 'precip'}, inplace=True)
+    return df
+
 
 def project(lat: float, lon: float, scenario: str) -> Dict[int, float]:
     """Return the median total precipitation for the given location for the years 1950-2100.
