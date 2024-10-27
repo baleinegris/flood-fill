@@ -35,7 +35,10 @@ def get_plot(address, expected_floods) -> str:
 # Function to load training data from a pickle file
 def load_data():
     # Load the data from the pickle file
-    df = pd.read_pickle(lzma.open('data/training_data.pkl.xz'))
+    try:
+        df = pd.read_pickle('data/training_data.pkl.xz')
+    except:
+        df = pd.read_pickle(lzma.open('data/training_data.pkl.xz'))
     return df
 
 if __name__ == '__main__':
