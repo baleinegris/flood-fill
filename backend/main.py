@@ -13,14 +13,16 @@ def _get_expected_floods_year(lat, lon, yr, scenario, model):
     # Project precipitation data for the given coordinates and scenario
     precip = project(lat, lon, scenario)[yr]
     # Predict floods using the model
-    return model.predict_floods({'lat': [lat], 'lon': [lon], 'precip': [precip]})
+    return [model.predict_floods({'lat': [lat], 'lon': [lon], 'precip': [precip]}), precip]
 
 # Function to get expected floods for a given latitude, longitude, year, and scenario
 def get_expected_floods(lat, lon, scenario, model):
     # Define the range of years for the prediction
     years = range(2024, 2101)
+    expected_floods = {}
     # Get expected floods for each year in the range
-    expected_floods = [_get_expected_floods_year(lat, lon, yr, scenario, model) for yr in years]   
+    for yr in years:
+        expected_floods[yr] = _get_expected_floods_year(lat, lon, yr, scenario, model)
     return expected_floods
 
 # Function to generate and save a plot of expected floods for a given address
@@ -40,7 +42,7 @@ def get_plot(address, expected_floods) -> str:
 def load_data():
     # Load the data from the pickle file
     try:
-        df = pd.read_pickle('data/training_data.pkl.xz')
+        df = pd.read_pickle('data/training_data.pkl')
     except:
         df = pd.read_pickle(lzma.open('data/training_data.pkl.xz'))
     return df
@@ -50,5 +52,5 @@ if __name__ == '__main__':
     df = load_data()
     # Initialize the model with the training data
     model = Model(df)
-    model.save(MODEL_PATH)
-    print(get_expected_floods(50, -119, 'ssp245'))
+    model.model.save(MODEL_PATH)
+    print(get_expected_floods(50, -119, 'ssp245', model))

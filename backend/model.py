@@ -7,7 +7,7 @@ from tensorflow.keras.layers import Dense
 import matplotlib.pyplot as plt
 
 LAYERS = [8, 4]
-EPOCHS = 3
+EPOCHS = 1
 BATCH_SIZE = 256
 
 class Model():
@@ -38,19 +38,19 @@ class Model():
         history = model.fit(X_train, y_train, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_split=0.2)
 
         # Plot the loss for each epoch
-        plt.plot(history.history['loss'], label='Training Loss')
-        plt.plot(history.history['val_loss'], label='Validation Loss')
-        plt.xlabel('Epoch')
-        plt.ylabel('Loss')
-        plt.legend()
-        plt.show()
+        # plt.plot(history.history['loss'], label='Training Loss')
+        # plt.plot(history.history['val_loss'], label='Validation Loss')
+        # plt.xlabel('Epoch')
+        # plt.ylabel('Loss')
+        # plt.legend()
+        # plt.show()
         
         # Evaluate the model
-        loss = model.evaluate(X_test, y_test)
+        loss = model.evaluate(X_test, y_test, batch_size=BATCH_SIZE)
         print(f'Test Loss: {loss}')
 
         # Predict
-        predictions = model.predict(X_test)
+        predictions = model.predict(X_test, batch_size=BATCH_SIZE)
         print(predictions)
 
         self.model = model
