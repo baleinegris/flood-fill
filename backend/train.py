@@ -10,13 +10,14 @@ def load_data():
     # Load the data from the pickle file
     try:
         df = pd.read_pickle('data/training_data.pkl')
-    except:
+    except (FileNotFoundError, lzma.LZMAError):
         df = pd.read_pickle(lzma.open('data/training_data.pkl.xz'))
     return df
 
-# Load the training data
-df = load_data()
-# Initialize the model with the training data
-model = Model(df)
-model.save(MODEL_PATH)
-print(get_expected_floods(50, -119, 'ssp245', model))
+if __name__ == '__main__':
+    # Load the training data
+    df = load_data()
+    # Initialize the model with the training data
+    model = Model(df)
+    model.save(MODEL_PATH)
+    print(get_expected_floods(50, -119, 'ssp245', model))

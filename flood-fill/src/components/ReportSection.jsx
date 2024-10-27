@@ -8,19 +8,19 @@ export default function ReportSection({ precipitation, expectedFloods, graphHref
         <>
         <div className="flex items-start h-[40%] justify-start">
         <div className="flex flex-col w-[60%]">
-            <div className="text-black"> Average Precipitation: {Math.round(precipitation)}mm</div>
-            <div className="text-black"> Current Canadian Average: 537mm</div>
-            <div className="text-black"> Expected number of floods per year: {expectedFloods}</div>
+            <div className="text-black"> <span className="font-bold">Average Precipitation</span>: {Math.round(precipitation)}mm</div>
+            <div className="text-black"> <span className="font-bold">Current Canadian Average</span>: 537mm</div>
+            <div className="text-black">  <span className="font-bold">Expected number of floods per year</span>: {expectedFloods.toFixed(4)}</div>
             <div className="flex flex-col items-align justify-center">
             </div>
 
 </div>
         <div className="flex flex-col w-[40%]">
-            <div className="text-black font-bold"> Danger Level:</div>
+            <div className="text-black font-bold"> <span className="font-bold">Danger Level</span>:</div>
             <DangerBar percent={70} />
         </div>
     </div>
-    Projected number of floods per year:
+    <span className="font-bold">Projected number of floods per year</span>:
     <img src={`data:image/jpeg;base64,${graphHref}`} style={{ width: "400px", height:'200px' }} className=""/>
 </>
     )

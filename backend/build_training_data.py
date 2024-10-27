@@ -13,7 +13,8 @@ def get_floods(filename: str) -> dict:
         #print(src.schema)
         floods = []
         for feature in src:
-            floods.append({'year': feature['properties']['year'], 'lon': feature['geometry']['coordinates'][0], 'lat': feature['geometry']['coordinates'][1]})
+            floods.append({'year': feature['properties']['year'], 'lon': feature['geometry'][
+                'coordinates'][0], 'lat': feature['geometry']['coordinates'][1]})
     return floods
 
 
@@ -39,7 +40,7 @@ if __name__ == '__main__':
     print("Counting floods")
     for i, flood in enumerate(floods):
         print(f'\r{i}/{len(floods)}', end='')
-        flooded_areas = _get_closest_coords(flood['lat'], flood['lon']) 
+        flooded_areas = _get_closest_coords(flood['lat'], flood['lon'])
         df.loc[flooded_areas & (df['year'] == flood['year']), ['floods_per_year']] += 1
     print(f'\r{len(floods)}/{len(floods)}') # finalize count display
 
@@ -50,4 +51,3 @@ if __name__ == '__main__':
     print(f"Saving to {PICKLE_PATH}")
     with lzma.open(f"{PICKLE_PATH}.xz", "wb") as f:
         df.to_pickle(f)
-

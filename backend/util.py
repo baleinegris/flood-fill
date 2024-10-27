@@ -9,7 +9,8 @@ import matplotlib.pyplot as plt
 
 # def get_elevation(lat, lon):
 #     api_key = 'YOUR_GOOGLE_MAPS_API_KEY'
-#     url = f'https://maps.googleapis.com/maps/api/elevation/json?locations={lat}%2C{lon}&key={GOOGLE_API_KEY}'
+#     url = f'https://maps.googleapis.com/maps/api/elevation/json?locations={lat}%2C{lon}&key={
+#     GOOGLE_API_KEY}'
 #     response = requests.get(url)
 #     if response.status_code == 200:
 #         results = response.json().get('results')
@@ -27,6 +28,7 @@ def get_plot(address, expected_floods) -> str:
     plt.title(f'Expected Floods per Year for {address}')
     plt.xlabel('Year')
     plt.ylabel('Expected Floods')
+    plt.ylim(0, max(y) * 1.3)
     plt.grid(True)
     bio = BytesIO()
     plt.savefig(bio, format='png')
