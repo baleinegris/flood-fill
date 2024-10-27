@@ -6,6 +6,10 @@ from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 import matplotlib.pyplot as plt
 
+LAYERS = [8, 4]
+EPOCHS = 3
+BATCH_SIZE = 256
+
 class Model():
     def __init__(self, df):
         # Features and target
@@ -22,8 +26,8 @@ class Model():
 
         # Build the model
         model = Sequential([
-            Dense(8, input_dim=3, activation='relu'),
-            Dense(4, activation='relu'),
+            Dense(LAYERS[0], input_dim=3, activation='relu'),
+            Dense(LAYERS[1], activation='relu'),
             Dense(1)
         ])
 
@@ -31,7 +35,7 @@ class Model():
         model.compile(optimizer='adam', loss='mse')
 
         # Train the model
-        history = model.fit(X_train, y_train, epochs=20, batch_size=10, validation_split=0.2)
+        history = model.fit(X_train, y_train, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_split=0.2)
 
         # Plot the loss for each epoch
         plt.plot(history.history['loss'], label='Training Loss')

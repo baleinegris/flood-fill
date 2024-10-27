@@ -6,6 +6,8 @@ from precip import project
 import pandas as pd
 import lzma
 
+MODEL_PATH = "models/small.keras"
+
 def _get_expected_floods_year(lat, lon, yr, scenario, model):
     # Initialize the model with the training data
     # Project precipitation data for the given coordinates and scenario
@@ -48,4 +50,5 @@ if __name__ == '__main__':
     df = load_data()
     # Initialize the model with the training data
     model = Model(df)
+    model.save(MODEL_PATH)
     print(get_expected_floods(50, -119, 'ssp245'))
