@@ -16,7 +16,9 @@ def getData():
     lat, lon, scenario, addr = [request.json[x] for x in ['lat', 'lon', 'scenario', 'addr']]
     expected_floods = get_expected_floods(lat, lon, scenario, model)
     plot_data = get_plot(addr, expected_floods)
-    data = {'expected_floods': expected_floods, 'plot': plot_data}
+    current_danger = get_danger(expected_floods[2024])
+    future_danger = get_danger(expected_floods[2100])
+    data = {'expected_floods': expected_floods, 'plot': plot_data, 'current_danger': current_danger, 'future_danger': future_danger}
     print(data)
     return data
 
