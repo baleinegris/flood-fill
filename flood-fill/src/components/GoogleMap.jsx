@@ -6,7 +6,10 @@ import Report from './Report';
 import { ReportContext } from '../contexts/ReportViewContext';
 import SpinnerLoad from './Spinner';
 
-const FLASK_URL = 'temp'
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+
+const FLASK_URL = 'https://localhost:1234/get-data/'
 
 const mapStyles = [
   {
@@ -60,6 +63,7 @@ export default function GoogleMap() {
   const mapRef = useRef(null);
   const [map, setMap] = useState(null);
   const [marker, setMarker] = useState(null);
+  const [scenario, setScenario] = useState('SSP245');
   const handleInputChange = (event) => {
     setLocation(event.target.value);
   };
@@ -67,12 +71,24 @@ export default function GoogleMap() {
     setTimeout(() => {
       setLoadingReport(false);
     }, 1000);
-    return;
-    const response = await fetch(FLASK_URL);
+    let payload = {
+      lat: position.lat(),
+      lon: position.lng(),
+      addr: location,
+      scenario: scenario,
+    }
+    const response = await fetch(FLASK_URL, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
     const data = await response.json();
-    return data;
     setLoadingReport(false);
+    return data;
   }
+
   const handleSearch = () => {
     if (window.google && window.google.maps && location) {
       const geocoder = new window.google.maps.Geocoder();
@@ -173,8 +189,16 @@ export default function GoogleMap() {
     return (
       <>
       <div className='bg-white backdrop-blur-sm px-5 pb-5 m-5 rounded-lg border-black border-[1px] left-0'>
+      <div className='flex justify-left items-center'>
       <input className='m-4 p-2 z-10 relative bg-slate-500 border-black border-2 text-black' ref={inputRef} type="text" placeholder="Type in an address!" onChange={handleInputChange}/>
-      <button className='relative border-black border-1' onClick={handleSearch}> Search! </button>
+      <DropdownButton id="dropdown-basic-button" title={scenario} className='relative'>
+        <Dropdown.Item onClick={() => setScenario('SSP126')}>SSP126</Dropdown.Item>
+        <Dropdown.Item onClick={() => setScenario('SSP245')}>SSP245</Dropdown.Item>
+        <Dropdown.Item onClick={() => setScenario('SSP585')}>SSP585</Dropdown.Item>
+      </DropdownButton>
+      <button className='relative border-black border-1 m-2 rounded-lg' onClick={handleSearch}> Search! </button>
+      </div>
+        
       <div ref={mapRef} style={{ width: '60vw', height: '80vh' }} />
       </div>
       {reportView && 
