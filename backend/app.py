@@ -4,6 +4,7 @@ from train import load_data, MODEL_PATH
 from model import Model
 from util import get_plot, get_expected_floods
 import tensorflow as tf
+from danger import get_danger
 
 app = Flask(__name__)
 CORS(app)

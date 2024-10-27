@@ -2,6 +2,7 @@ import requests
 import os
 import base64
 from io import BytesIO
+from precip import project
 
 import matplotlib.pyplot as plt
 
