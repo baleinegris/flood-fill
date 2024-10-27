@@ -202,9 +202,9 @@ export default function GoogleMap() {
 
     return (
       <>
-      <div className='bg-white backdrop-blur-sm px-5 pb-5 m-5 rounded-lg border-black border-[1px] left-0'>
+      <div className='bg-white backdrop-blur-sm m-2 px-5 pb-5 rounded-lg border-black border-[1px] left-0'>
       <div className='flex justify-left items-center'>
-      <input className='m-4 p-2 z-10 relative bg-slate-500 border-black border-2 text-black' ref={inputRef} type="text" placeholder="Type in an address!" onChange={handleInputChange}/>
+      <input className='mx-4 p-2 z-10 relative bg-slate-500 border-black border-2 text-black' ref={inputRef} type="text" placeholder="Type in an address!" onChange={handleInputChange}/>
       <DropdownButton id="dropdown-basic-button" title={scenario} className='relative'>
         <Dropdown.Item onClick={() => setScenario('SSP126')}>SSP126</Dropdown.Item>
         <Dropdown.Item onClick={() => setScenario('SSP245')}>SSP245</Dropdown.Item>
@@ -213,7 +213,7 @@ export default function GoogleMap() {
       <button className='relative border-black border-1 m-2 rounded-lg' onClick={handleSearch}> Search! </button>
       </div>
         
-      <div ref={mapRef} style={{ width: '60vw', height: '80vh' }} />
+      <div ref={mapRef} style={{ width: '60vw', height: '70vh' }} />
       </div>
       {reportView && 
       <div className='flex w-full h-full justify-center items-center'>

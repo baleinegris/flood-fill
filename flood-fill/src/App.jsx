@@ -27,7 +27,7 @@ const ReportMessage = () => {
 
   return (
     !reportView && (
-      <div className='relative text-white w-[200px] p-6 rounded-xl bg-purple-950 font-bold border-black border-4'>
+      <div className='relative text-white m-2 p-6 rounded-xl bg-purple-950 font-bold border-black border-4'>
         Welcome to Flood Fill! Enter a location to generate a report of its expected flood risk in the future!
       </div>
     )
