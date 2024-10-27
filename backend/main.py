@@ -5,9 +5,6 @@ from model import Model
 from precip import project
 import pandas as pd
 
-# Load environment variables from a .env file
-load_dotenv()
-
 def _get_expected_floods_year(lat, lon, yr, scenario):
     # Project precipitation data for the given coordinates and scenario
     precip = project(lat, lon, scenario)[yr]
