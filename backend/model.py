@@ -22,8 +22,8 @@ class Model():
 
         # Build the model
         model = Sequential([
-            Dense(64, input_dim=3, activation='relu'),
-            Dense(32, activation='relu'),
+            Dense(8, input_dim=3, activation='relu'),
+            Dense(4, activation='relu'),
             Dense(1)
         ])
 
