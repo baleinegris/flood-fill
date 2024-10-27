@@ -37,13 +37,13 @@ def get_plot(address, expected_floods) -> str:
 
 # Function to load training data from a pickle file
 def load_data():
-    # Load the data from the specified pickle file
+    # Load the data from the pickle file
     df = pd.read_pickle('data/training_data.pkl')
     return df
 
-# Main execution block
 if __name__ == '__main__':
     # Load the training data
-    df = load_data()   
+    df = load_data()
     # Initialize the model with the training data
     model = Model(df)
+    print(get_expected_floods(50, -119, 'ssp245'))
