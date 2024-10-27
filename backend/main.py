@@ -15,7 +15,7 @@ def get_expected_floods(lat, lon, scenario, model):
     predictions = model.predict_floods(lat, lon, [precips[yr] for yr in years])
 
     for i, yr in enumerate(years):
-        expected_floods[yr] = [predictions[i], precips[yr]]
+        expected_floods[yr] = [predictions[i][0].item(), precips[yr].item()]
     return expected_floods
 
 # Function to load training data from a pickle file

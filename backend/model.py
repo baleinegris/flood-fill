@@ -33,11 +33,11 @@ class Model():
         model = Sequential([
             Dense(LAYERS[0], input_dim=3, activation='relu'),
             Dense(LAYERS[1], activation='relu'),
-            Dense(1)
+            Dense(1, activation='exponential')
         ])
 
         # Compile the model
-        model.compile(optimizer='adam', loss='mse')
+        model.compile(optimizer='adam', loss='poisson')
 
         # Train the model
         history = model.fit(X_train, y_train, epochs=EPOCHS, batch_size=BATCH_SIZE, validation_split=0.2)
@@ -60,10 +60,10 @@ class Model():
 
         self.model = model
 
-    def predict_floods(self, lat, long, precips):
-        inputs = pd.DataFrame({'lat': [lat], 'lon': [lon], 'precip': precips})
+    def predict_floods(self, lat, lon, precips):
+        inputs = pd.DataFrame({'lat': [lat]*len(precips), 'lon': [lon]*len(precips), 'precip': precips})
         predicted_floods = self.model.predict(inputs, batch_size=BATCH_SIZE)
-        return predicted_floods[0]
+        return predicted_floods
     
     def load(self, path):
         self.model = tf.keras.models.load_model(path)
