@@ -1,6 +1,3 @@
-import base64
-from io import BytesIO
-import matplotlib.pyplot as plt
 from model import Model
 from precip import project
 import pandas as pd
@@ -24,21 +21,6 @@ def get_expected_floods(lat, lon, scenario, model):
     for yr in years:
         expected_floods[yr] = _get_expected_floods_year(lat, lon, yr, scenario, model)
     return expected_floods
-
-# Function to generate and save a plot of expected floods for a given address
-def get_plot(address, expected_floods) -> str:
-    # Create a plot of expected floods over the years
-    plt.figure(figsize=(10, 5))
-    x = [yr for yr in expected_floods]
-    y = [expected_floods[yr][0] for yr in expected_floods]
-    plt.plot(x, y, marker='o')
-    plt.title(f'Expected Floods per Year for {address}')
-    plt.xlabel('Year')
-    plt.ylabel('Expected Floods')
-    plt.grid(True)
-    bio = BytesIO()
-    plt.savefig(bio, format='png')
-    return base64.b64encode(bio.read()).decode('utf-8')
 
 # Function to load training data from a pickle file
 def load_data():

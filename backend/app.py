@@ -1,7 +1,8 @@
 from flask import Flask, request, redirect
 from flask_cors import CORS
-from main import get_expected_floods, get_plot, load_data, MODEL_PATH
+from main import get_expected_floods, load_data, MODEL_PATH
 from model import Model
+from util import get_plot
 import tensorflow as tf
 
 app = Flask(__name__)
