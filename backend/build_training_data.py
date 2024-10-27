@@ -40,7 +40,7 @@ if __name__ == '__main__':
         print(f'\r{i}/{len(floods)}', end='')
         flooded_areas = _get_closest_coords(flood['lat'], flood['lon']) 
         df.loc[flooded_areas & (df['year'] == flood['year']), ['floods_per_year']] += 1
-    print() #add newline that wasn't printed earlier
+    print(f'\r{len(floods)}/{len(floods)}') # finalize count display
 
     # Remove data that won't be used in training
     df.dropna(inplace=True)
