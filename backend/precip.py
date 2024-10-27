@@ -14,6 +14,7 @@ def get_dataframe() -> List[Tuple[float, float]]:
     df.reset_index(inplace=True)  # convert MultiIndex to columns
     df['year'] = [t.year for t in df['time']]
     df.drop('time', axis=1, inplace=True)
+    df.rename(columns={'Precip': 'precip'}, inplace=True)
     return df
 
 
