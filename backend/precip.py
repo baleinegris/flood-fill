@@ -12,6 +12,8 @@ def get_dataframe() -> List[Tuple[float, float]]:
     df = xr.to_dataframe()
     df.drop('spatial_ref', axis=1, inplace=True)
     df.reset_index(inplace=True)  # convert MultiIndex to columns
+    df['year'] = [t.year for t in df['time']]
+    df.drop('time', axis=1, inplace=True)
     return df
 
 
