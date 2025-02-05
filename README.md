@@ -17,3 +17,7 @@ Things to improve for Flood Fill :
 <li> Develop Flood Fill into a web extension! </li>
 <li> Improve the tuning of the model (and add more features) </li>
 </ul>
+
+## Data Sources
+- [Historical Flood Events | Natural Resources Canada](https://open.canada.ca/data/en/dataset/fe83a604-aa5a-4e46-903c-685f8b0cc33c/resource/73306f3d-8367-463e-899a-7a3854e6b2ab)
+- [CanDCS-U6 Precipitation History & Predictions | Environment and Climate Change Canada](https://open.canada.ca/data/en/dataset/f73d6939-912a-4add-a291-c233fc5d1946)
